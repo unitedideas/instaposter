@@ -5,6 +5,21 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait  # available since 2.4.0
 from selenium.webdriver.support import expected_conditions as EC  # available since 2.26.0
 
+from selenium.webdriver.common.keys import Keys
+import secrets
+import time
+import os
+from tkinter import *
+# from tkinter.tkk import *
+
+
+def showImage():
+    os.system(r'/Users/shanecheek/Desktop/projects/instaposter/autopost/1/fd3844becd196550329031b0c7afdb57.jpg')
+
+
+root = Tk()
+root.title("InstaPicture")
+
 # from instapy import InstaPy
 # from instapy.util import smart_run
 options = Options()
@@ -12,85 +27,67 @@ options.add_argument(
     '--user-agent=Mozilla/5.0 (iPhone; CPU iPhone OS 10_3 like Mac OS X) AppleWebKit/602.1.50 (KHTML, like Gecko) CriOS/56.0.2924.75 Mobile/14E5239e Safari/602.1')
 # options.add_argument("--headless")
 session = webdriver.Chrome(options=options)
-session.get('https://www.instagram.com/accounts/login/')
-from . import secrets
+session.get('https://www.instagram.com/accounts/login/?source=mobile_nav_menu')
 
 # login credentials
 insta_username = secrets.insta_username
 insta_password = secrets.insta_password
 
-print('2')
+# if on insa home page
 try:
-    login_button = session.find_element_by_xpath('//*[@id="react-root"]/section/main/article/div/div/div/div[2]/button')
-    login_button.click()
-    print('login clicked')
+    usr_login_button = session.find_element_by_xpath(
+        '//*[@id="react-root"]/section/main/article/div/div/div/div[2]/button')
+    usr_login_button.click()
+    print('Login clicked')
 except:
     print("at " + session.current_url)
-try:
-    username_input = WebDriverWait(session, 5).until(
-        EC.presence_of_element_located((By.XPATH, "//div[contains(@role,'menuitem')]")))
-    print("made it to xpath")
-except:
-    pass
-# except:
-#     print('failed the selector')
-# try:
-#     username_input = WebDriverWait(session, 5).until(EC.presence_of_element_located((By.XPATH, '//*[@id="fb2316e2f4a1d"]')))
-#     print('got the xpath')
-# except:
-#     print('failed the xpath')
-# try:
-#     username_input = session.find_element_by_id('fb2316e2f4a1d').text
-#     print('got the id')
-# except:
-#     print('failed the id')
 
-# try:
-#     post_it = session.find_element_by_class_name("q02Nz _0TPg").text
-# except:
-#     print('fail 1')
-# try:
-#     post_it = session.find_element_by_xpath("//div[contains(@class,'q02Nz _0TPg')]").text
-# except:
-#     print('fail 2')
-# try:
-#     post_it = session.find_element_by_xpath("//div[contains(@class,'0TPg')]").text
-# except:
-#     print('fail 3')
-# try:
-#     post_it = session.find_element_by_xpath("//div[contains(@role,'menuitem')]").text
-# except:
-#     print('fail 4')
-# try:
-#     post_it = session.find_element_by_xpath("//div[contains(@tabindex,'0')]").text
-# except:
-#     print('fail 5')
-# try:
-#     post_it = session.find_element_by_xpath("//div[@tabindex='0']").text
-# except:
-#     print('fail 6')
-# try:
-#     post_it = session.find_element_by_xpath("//span[@class='glyphsSpriteNew_post__outline__24__grey_9 u-__7']").text
-# except:
-#     print('fail 7')
-# try:
-#     post_it = session.find_element_by_xpath("//span[@class='glyphsSpriteNew_post__outline__24__grey_9 u-__7']").text
-# except:
-#     print('fail 8')
-# try:
-#     post_it = session.find_element_by_xpath("//span[contains(@aria-label,'New Post')]").text
-# except:
-#     print('fail 9')
-# try:
-#     post_it = session.find_element_by_xpath("//span[@aria-label='New Post']").text
-# except:
-#     print('fail 10')
-# try:
-#     post_it = session.find_element_by_css_selector("div.q02Nz:nth-child(3)").text
-# except:
-#     print('fail 11')
-# print(post_it)
-print('made it')
+# if on login page
+WebDriverWait(session, 5).until(
+    EC.presence_of_element_located((By.XPATH, "//input[@name='username']")))
+print("Username input loaded")
+username_input = session.find_element_by_xpath("//input[@name='username']")
+username_input.click()
+username_input.send_keys(insta_username)
+print("Username loaded")
 
-session.close()
-session.quit()
+time.sleep(2)
+
+password_input = session.find_element_by_xpath("//input[@name='password']")
+password_input.click()
+password_input.send_keys(insta_password)
+print('Passsword loaded')
+
+time.sleep(2)
+
+print('Trying to login')
+login_button = session.find_element_by_xpath("//button[text()='Log in']")
+login_button.click()
+
+time.sleep(2)
+
+print('Skip "save your login info"')
+WebDriverWait(session, 5).until(
+    EC.presence_of_element_located((By.XPATH, "//button[text()='Not Now']")))
+not_now_btn = session.find_element_by_xpath("//button[text()='Not Now']")
+not_now_btn.click()
+
+print('Logged in')
+time.sleep(2)
+
+print('Clicking post button now')
+WebDriverWait(session, 5).until(
+    EC.presence_of_element_located(
+        (By.XPATH, '//*[@id="react-root"]/section/nav[2]/div/div/div[2]/div/div/div[3]/span')))
+post_btn = session.find_element_by_xpath('//*[@id="react-root"]/section/nav[2]/div/div/div[2]/div/div/div[3]/span')
+post_btn.click()
+time.sleep(2)
+# post_btn.send_keys(r'/Users/shanecheek/Desktop/projects/instaposter/autopost/1/fd3844becd196550329031b0c7afdb57.jpg')
+# actions.send_keys('/Users/shanecheek/Desktop/projects/instagram_bot/autopost/fd3844becd196550329031b0c7afdb57.jpg')
+print('found it, clicked post!!!')
+time.sleep(2)
+
+showImage()
+
+# session.close()
+# session.quit()

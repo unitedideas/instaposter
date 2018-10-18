@@ -1,6 +1,7 @@
 .idea/workspace.xml
 
 secrets.py
+autopost
 
 *.sql
 *.sqlite
