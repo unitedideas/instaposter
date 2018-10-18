@@ -75,20 +75,6 @@ post_btn.click()
 print('found it, clicked post!!!')
 time.sleep(2)
 
-payload = session.file_detector.is_local_file(
-    r"/Users/shanecheek/Desktop/projects/instaposter/autopost/1/fd3844becd196550329031b0c7afdb57.jpg")
-print(payload)
-
-alert = session.switch_to.alert()
-alert.accept()
-def openFolder(path):
-    subprocess.Popen(['open', '--', path])
-
-
-openFolder('/Users/shanecheek/Desktop/projects/instaposter/autopost/1/fd3844becd196550329031b0c7afdb57.jpg')
-
-WebDriverWait(session, 5).until(
-    EC.element_to_be_clickable((By.XPATH, '//input[@type="file"]'))).send_keys(
-    "/Users/shanecheek/Desktop/projects/instaposter/autopost/1/fd3844becd196550329031b0c7afdb57.jpg")
-session.close()
-session.quit()
+#
+# session.close()
+# session.quit()
